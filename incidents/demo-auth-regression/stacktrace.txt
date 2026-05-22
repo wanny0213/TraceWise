@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "auth_service/handlers.py", line 88, in login
+    token = token_signer.issue(user_id=user.id)
+  File "auth_service/security.py", line 41, in issue
+    signer = JwtSigner.from_env()
+  File "auth_service/security.py", line 17, in from_env
+    raise RuntimeError("Missing environment variable AUTH_JWT_SECRET")
+RuntimeError: Missing environment variable AUTH_JWT_SECRET

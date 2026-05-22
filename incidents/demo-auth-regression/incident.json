@@ -1,0 +1,22 @@
+{
+  "incident_id": "demo-auth-regression",
+  "title": "Auth service rejects all login requests after deploy",
+  "summary": "Login requests started returning 500s after a deployment that changed environment variable names.",
+  "artifacts": [
+    {
+      "id": "runtime-log",
+      "type": "log",
+      "path": "runtime.log"
+    },
+    {
+      "id": "stack-trace",
+      "type": "stack_trace",
+      "path": "stacktrace.txt"
+    },
+    {
+      "id": "config",
+      "type": "config",
+      "path": "service.yaml"
+    }
+  ]
+}

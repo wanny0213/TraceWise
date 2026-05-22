@@ -1,0 +1,8 @@
+service: auth
+version: 2026.05.21-rc1
+environment:
+  AUTH_TOKEN_SECRET: ${AUTH_TOKEN_SECRET}
+  SESSION_COOKIE_NAME: auth_session
+notes:
+  - deployment renamed the JWT secret lookup in code from AUTH_TOKEN_SECRET to AUTH_JWT_SECRET
+  - production secret store still contains AUTH_TOKEN_SECRET only

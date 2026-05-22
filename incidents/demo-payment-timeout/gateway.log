@@ -1,0 +1,6 @@
+2026-05-21 18:02:04Z checkout request_id=c01 status=started amount=129.00
+2026-05-21 18:02:07Z upstream=paybridge status=504 message="gateway timed out"
+2026-05-21 18:02:07Z checkout request_id=c01 status=failed reason=upstream timeout
+2026-05-21 18:03:12Z upstream=paybridge status=504 message="gateway timed out"
+2026-05-21 18:04:38Z alert payment_authorization_timeout_rate actual=38% threshold=5%
+2026-05-21 18:06:10Z healthcheck paybridge status=degraded latency_ms=9820

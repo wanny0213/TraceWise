@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tracewise"
+version = "0.1.0"
+description = "AI incident triage agent with grounded root-cause analysis over logs, stack traces, and code evidence."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  "fastapi>=0.110",
+  "pydantic>=2.6",
+  "streamlit>=1.34",
+  "uvicorn>=0.27",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0",
+  "httpx>=0.27",
+]
+
+[project.scripts]
+tracewise-eval = "tracewise.evals.cli:main"
+tracewise-triage = "tracewise.analysis.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["tracewise*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

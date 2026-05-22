@@ -1,0 +1,22 @@
+{
+  "incident_id": "demo-payment-timeout",
+  "title": "Checkout payments fail during upstream gateway outage",
+  "summary": "Payment authorization began timing out while the gateway returned 504 errors.",
+  "artifacts": [
+    {
+      "id": "gateway-log",
+      "type": "log",
+      "path": "gateway.log"
+    },
+    {
+      "id": "test-output",
+      "type": "test_output",
+      "path": "reproduction.out"
+    },
+    {
+      "id": "client-code",
+      "type": "code",
+      "path": "payment_client.py"
+    }
+  ]
+}

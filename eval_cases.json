@@ -1,0 +1,12 @@
+[
+  {
+    "incident_dir": "incidents/demo-auth-regression",
+    "expected_cause_keywords": ["configuration"],
+    "query": "Why did login start failing after the deployment?"
+  },
+  {
+    "incident_dir": "incidents/demo-payment-timeout",
+    "expected_cause_keywords": ["timeout", "upstream"],
+    "query": "Why did checkout payments fail?"
+  }
+]

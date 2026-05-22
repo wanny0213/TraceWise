@@ -1,0 +1,4 @@
+pytest tests/test_checkout.py::test_authorization_retries
+FAILED tests/test_checkout.py::test_authorization_retries - AssertionError: expected fallback authorization state after timeout
+Observed gateway response: 504 gateway timed out
+Client raised PaymentTimeout without retrying the backup route.
