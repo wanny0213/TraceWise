@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" role="img" aria-labelledby="title desc">
+  <title id="title">TraceWise dashboard preview</title>
+  <desc id="desc">Preview of the TraceWise incident triage dashboard with root-cause hypotheses, timeline, fix plan, and evidence citations.</desc>
+  <rect width="1440" height="900" fill="#f6f7f9"/>
+  <rect x="0" y="0" width="270" height="900" fill="#111827"/>
+  <text x="36" y="64" fill="#ffffff" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="700">TraceWise</text>
+  <text x="36" y="95" fill="#a7b0c0" font-family="Inter, Arial, sans-serif" font-size="14">AI incident triage</text>
+  <text x="36" y="154" fill="#ffffff" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="700">Incident</text>
+  <rect x="36" y="176" width="198" height="42" rx="6" fill="#1f2937" stroke="#374151"/>
+  <text x="52" y="202" fill="#e5e7eb" font-family="Inter, Arial, sans-serif" font-size="13">demo-auth-regression</text>
+  <text x="36" y="256" fill="#ffffff" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="700">Triage Question</text>
+  <rect x="36" y="278" width="198" height="108" rx="6" fill="#1f2937" stroke="#374151"/>
+  <text x="52" y="308" fill="#d1d5db" font-family="Inter, Arial, sans-serif" font-size="13">What is the most</text>
+  <text x="52" y="330" fill="#d1d5db" font-family="Inter, Arial, sans-serif" font-size="13">likely root cause?</text>
+  <rect x="36" y="414" width="198" height="42" rx="6" fill="#2563eb"/>
+  <text x="90" y="441" fill="#ffffff" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700">Run triage</text>
+
+  <text x="318" y="62" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="34" font-weight="800">TraceWise</text>
+  <text x="318" y="92" fill="#64748b" font-family="Inter, Arial, sans-serif" font-size="15">AI incident triage with cited root-cause analysis</text>
+  <text x="318" y="150" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="700">Auth service rejects all login requests after deploy</text>
+  <text x="318" y="178" fill="#475569" font-family="Inter, Arial, sans-serif" font-size="15">Login requests started returning 500s after a deployment that changed environment variable names.</text>
+
+  <rect x="318" y="218" width="760" height="132" rx="8" fill="#ffffff" stroke="#e5e7eb"/>
+  <text x="342" y="258" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="19" font-weight="700">Executive Summary</text>
+  <rect x="342" y="276" width="708" height="52" rx="6" fill="#eef6ff" stroke="#bfdbfe"/>
+  <text x="362" y="308" fill="#1e3a8a" font-family="Inter, Arial, sans-serif" font-size="15">TraceWise ranks configuration regression as the leading cause with 70% confidence.</text>
+
+  <rect x="1100" y="218" width="256" height="132" rx="8" fill="#ffffff" stroke="#e5e7eb"/>
+  <text x="1124" y="260" fill="#64748b" font-family="Inter, Arial, sans-serif" font-size="13">Top Confidence</text>
+  <text x="1124" y="302" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="34" font-weight="800">70%</text>
+  <text x="1240" y="260" fill="#64748b" font-family="Inter, Arial, sans-serif" font-size="13">Evidence</text>
+  <text x="1240" y="302" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="34" font-weight="800">5</text>
+
+  <text x="318" y="406" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="20" font-weight="700">Root-Cause Hypotheses</text>
+  <rect x="318" y="428" width="650" height="138" rx="8" fill="#ffffff" stroke="#e5e7eb"/>
+  <text x="342" y="464" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="17" font-weight="700">1. configuration regression</text>
+  <rect x="342" y="484" width="590" height="9" rx="4" fill="#e5e7eb"/>
+  <rect x="342" y="484" width="413" height="9" rx="4" fill="#2563eb"/>
+  <text x="342" y="524" fill="#475569" font-family="Inter, Arial, sans-serif" font-size="14">Evidence mentions missing configuration, secrets, or environment variables near the failure path.</text>
+  <text x="342" y="548" fill="#64748b" font-family="Inter, Arial, sans-serif" font-size="12">runtime.log:1-7, service.yaml:1-8, stacktrace.txt:1-8</text>
+
+  <rect x="318" y="584" width="650" height="154" rx="8" fill="#ffffff" stroke="#e5e7eb"/>
+  <text x="342" y="622" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="17" font-weight="700">Recommended Fix Plan</text>
+  <rect x="342" y="648" width="18" height="18" rx="3" fill="#ffffff" stroke="#94a3b8"/>
+  <text x="376" y="662" fill="#334155" font-family="Inter, Arial, sans-serif" font-size="14">Compare runtime configuration against the last healthy deployment.</text>
+  <rect x="342" y="686" width="18" height="18" rx="3" fill="#ffffff" stroke="#94a3b8"/>
+  <text x="376" y="700" fill="#334155" font-family="Inter, Arial, sans-serif" font-size="14">Add startup validation for required environment variables and secrets.</text>
+  <rect x="342" y="724" width="18" height="18" rx="3" fill="#ffffff" stroke="#94a3b8"/>
+  <text x="376" y="738" fill="#334155" font-family="Inter, Arial, sans-serif" font-size="14">Add a regression test that fails when required configuration is absent.</text>
+
+  <text x="1002" y="406" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="20" font-weight="700">Timeline</text>
+  <rect x="1002" y="428" width="354" height="242" rx="8" fill="#ffffff" stroke="#e5e7eb"/>
+  <circle cx="1030" cy="474" r="5" fill="#2563eb"/>
+  <line x1="1030" y1="481" x2="1030" y2="614" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="1050" y="468" fill="#64748b" font-family="Inter, Arial, sans-serif" font-size="12">2026-05-21 09:14:02Z</text>
+  <text x="1050" y="490" fill="#334155" font-family="Inter, Arial, sans-serif" font-size="13">deploy service=auth status=complete</text>
+  <circle cx="1030" cy="548" r="5" fill="#ef4444"/>
+  <text x="1050" y="542" fill="#64748b" font-family="Inter, Arial, sans-serif" font-size="12">2026-05-21 09:15:11Z</text>
+  <text x="1050" y="564" fill="#334155" font-family="Inter, Arial, sans-serif" font-size="13">Missing environment variable AUTH_JWT_SECRET</text>
+  <circle cx="1030" cy="622" r="5" fill="#f59e0b"/>
+  <text x="1050" y="616" fill="#64748b" font-family="Inter, Arial, sans-serif" font-size="12">2026-05-21 09:16:01Z</text>
+  <text x="1050" y="638" fill="#334155" font-family="Inter, Arial, sans-serif" font-size="13">AUTH_TOKEN_SECRET present=true</text>
+
+  <text x="318" y="790" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="20" font-weight="700">Evidence</text>
+  <rect x="318" y="812" width="1038" height="52" rx="8" fill="#ffffff" stroke="#e5e7eb"/>
+  <text x="342" y="844" fill="#334155" font-family="Inter, Arial, sans-serif" font-size="14">runtime.log:1-7 - score 6.42 - matched terms: missing, environment, variable</text>
+</svg>

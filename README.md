@@ -4,6 +4,8 @@ TraceWise is an AI incident triage agent that investigates logs, stack traces, t
 
 The project is designed as an internship-grade AI engineering portfolio piece: practical, testable, evaluation-driven, and easy to demo.
 
+![TraceWise dashboard preview](docs/assets/tracewise-dashboard-preview.svg)
+
 ## What It Does
 
 Given an incident bundle, TraceWise:
