@@ -75,6 +75,26 @@ The dashboard lets you choose a demo incident and inspect:
 - recommended fix checklist
 - retrieved evidence chunks
 
+See [docs/demo-script.md](docs/demo-script.md) for a short walkthrough.
+
+## Case Study
+
+`demo-auth-regression` simulates a login outage after deployment. TraceWise connects three artifacts:
+
+- `runtime.log`: login requests fail because `AUTH_JWT_SECRET` is missing
+- `stacktrace.txt`: token signing fails inside the auth flow
+- `service.yaml`: production still provides the old `AUTH_TOKEN_SECRET`
+
+The top-ranked hypothesis is:
+
+```text
+configuration regression
+```
+
+This is the core product promise: TraceWise does not just summarize logs. It turns messy incident evidence into a cited, testable root-cause hypothesis.
+
+See [docs/case-study.md](docs/case-study.md) for the full walkthrough.
+
 ## API
 
 Start the FastAPI server:
@@ -92,6 +112,7 @@ curl http://127.0.0.1:8000/health
 ## Project Structure
 
 ```text
+.github/        CI workflow for tests and benchmark checks
 tracewise/
   api/          FastAPI app and request models
   analysis/     root-cause ranking, timeline extraction, CLI
@@ -119,6 +140,16 @@ TraceWise is not just a chatbot wrapper. It demonstrates the skills recruiters e
 ## Portfolio Resume Bullet
 
 > Built TraceWise, an AI incident triage agent that analyzes logs, stack traces, config, and code to produce cited root-cause hypotheses, incident timelines, and fix plans, with a benchmark suite measuring root-cause accuracy.
+
+## Continuous Integration
+
+The GitHub Actions workflow runs:
+
+- package install
+- unit and API tests
+- evaluation benchmark
+
+This keeps the demo honest as the project grows.
 
 ## Roadmap
 
