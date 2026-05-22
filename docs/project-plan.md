@@ -12,11 +12,11 @@
 ## Recruiter Polish Milestones
 
 1. Add screenshots and a case-study section to the README.
-2. Add vector retrieval and compare it against keyword retrieval.
-3. Add LLM synthesis with strict citation grounding.
-4. Add GitHub Actions ingestion for failed CI runs.
-5. Record a short demo video.
-6. Add patch proposal mode with generated regression tests.
+2. Add LLM synthesis with strict citation grounding.
+3. Add GitHub Actions ingestion for failed CI runs.
+4. Record a short demo video.
+5. Add patch proposal mode with generated regression tests.
+6. Add external embedding provider support.
 
 ## Stretch Goal
 

@@ -27,4 +27,4 @@ jobs:
         run: python -m pytest
 
       - name: Run evaluation benchmark
-        run: python -m tracewise.evals.cli eval_cases.json
+        run: python -m tracewise.evals.cli eval_cases.json --retriever compare

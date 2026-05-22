@@ -12,7 +12,7 @@ Given an incident bundle, TraceWise:
 
 1. Loads logs, stack traces, code, config, and reproduction output.
 2. Chunks artifacts with line-aware citation metadata.
-3. Retrieves relevant evidence with a local keyword retriever.
+3. Retrieves relevant evidence with keyword or local vector retrieval.
 4. Ranks likely root-cause hypotheses.
 5. Builds a timestamped incident timeline.
 6. Returns a recommended fix plan grounded in cited artifacts.
@@ -47,10 +47,22 @@ Run triage on a demo incident:
 python -m tracewise.analysis.cli incidents/demo-auth-regression
 ```
 
+Compare the local vector retriever:
+
+```bash
+python -m tracewise.analysis.cli incidents/demo-auth-regression --retriever vector
+```
+
 Run the benchmark:
 
 ```bash
 python -m tracewise.evals.cli eval_cases.json
+```
+
+Compare retrievers on the benchmark:
+
+```bash
+python -m tracewise.evals.cli eval_cases.json --retriever compare
 ```
 
 Expected benchmark result:
@@ -72,10 +84,12 @@ The dashboard lets you choose a demo incident and inspect:
 - executive summary
 - ranked root-cause hypotheses
 - confidence scores
+- active retriever mode
 - citations
 - incident timeline
 - recommended fix checklist
 - retrieved evidence chunks
+- keyword vs vector benchmark comparison
 
 See [docs/demo-script.md](docs/demo-script.md) for a short walkthrough.
 
@@ -155,7 +169,7 @@ This keeps the demo honest as the project grows.
 
 ## Roadmap
 
-- Add vector retrieval with embeddings.
+- Add external embedding provider support.
 - Add a React dashboard for timeline and evidence review.
 - Add GitHub Actions integration for failing CI logs.
 - Add LLM-based synthesis while preserving citation requirements.

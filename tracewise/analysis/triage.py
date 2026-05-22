@@ -11,7 +11,7 @@ from tracewise.core.models import (
     TriageReport,
 )
 from tracewise.ingestion.chunking import chunk_bundle
-from tracewise.retrieval.keyword import KeywordRetriever
+from tracewise.retrieval.factory import Retriever, build_retriever
 
 TIMESTAMP_RE = re.compile(r"\b\d{4}-\d{2}-\d{2}[ T]\d{2}:\d{2}:\d{2}(?:Z)?\b")
 
@@ -57,9 +57,13 @@ SIGNALS = {
 }
 
 
-def analyze_incident(bundle: IncidentBundle, query: str = "What is the most likely root cause?") -> TriageReport:
+def analyze_incident(
+    bundle: IncidentBundle,
+    query: str = "What is the most likely root cause?",
+    retriever_mode: str = "keyword",
+) -> TriageReport:
     chunks = chunk_bundle(bundle.incident_id, bundle.artifacts)
-    retriever = KeywordRetriever(chunks)
+    retriever = build_retriever(chunks, mode=retriever_mode)
     query_hits = retriever.search(query, top_k=8)
     signal_hits = _collect_signal_hits(retriever)
     evidence = _merge_hits(query_hits + signal_hits)
@@ -78,7 +82,7 @@ def analyze_incident(bundle: IncidentBundle, query: str = "What is the most like
     )
 
 
-def _collect_signal_hits(retriever: KeywordRetriever) -> list[RetrievalHit]:
+def _collect_signal_hits(retriever: Retriever) -> list[RetrievalHit]:
     hits: list[RetrievalHit] = []
     for terms in SIGNALS.values():
         hits.extend(retriever.search(" ".join(terms), top_k=3))

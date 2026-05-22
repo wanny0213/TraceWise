@@ -22,3 +22,16 @@ def test_triage_ranks_timeout_for_payment_demo():
     assert report.hypotheses
     assert report.hypotheses[0].label == "timeout or upstream outage"
     assert any("gateway.log" in citation for citation in report.hypotheses[0].citations)
+
+
+def test_triage_supports_vector_retriever():
+    bundle = load_incident_bundle("incidents/demo-auth-regression")
+
+    report = analyze_incident(
+        bundle,
+        query="Why did login fail after deploy?",
+        retriever_mode="vector",
+    )
+
+    assert report.hypotheses
+    assert report.hypotheses[0].label == "configuration regression"

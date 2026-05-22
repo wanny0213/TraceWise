@@ -34,7 +34,12 @@ The report can cite evidence as `path:start-end`.
 
 ## Retrieval
 
-The first retriever is local and deterministic. It scores chunks using token overlap with inverse-document-frequency weighting. This keeps tests and demos stable before adding an LLM or embedding provider.
+TraceWise currently supports two deterministic retrievers:
+
+- `keyword`: token overlap with inverse-document-frequency weighting
+- `vector`: dependency-free TF-IDF cosine similarity
+
+Both modes are local, reproducible, and covered by tests. This keeps the project measurable before adding external embedding models.
 
 ## Triage Analysis
 
@@ -50,7 +55,11 @@ The ranked hypotheses include confidence, rationale, and citations. The analyzer
 
 ## Evaluation
 
-`eval_cases.json` defines benchmark incidents and expected root-cause keywords. The evaluation CLI reports root-cause accuracy and per-case citations.
+`eval_cases.json` defines benchmark incidents and expected root-cause keywords. The evaluation CLI reports root-cause accuracy and per-case citations. It can also compare `keyword` and `vector` retrieval:
+
+```bash
+python -m tracewise.evals.cli eval_cases.json --retriever compare
+```
 
 Future evaluation should add:
 

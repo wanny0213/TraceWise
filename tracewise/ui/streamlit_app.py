@@ -31,6 +31,11 @@ def main() -> None:
         st.markdown("## TraceWise")
         st.caption("Evidence-grounded incident triage")
         selected = st.selectbox("Incident bundle", incident_dirs, format_func=lambda path: path.name)
+        retriever_mode = st.segmented_control(
+            "Retriever",
+            options=["keyword", "vector"],
+            default="keyword",
+        )
         query = st.text_area(
             "Triage question",
             value="What is the most likely root cause?",
@@ -42,17 +47,23 @@ def main() -> None:
         st.markdown("- Select an incident\n- Run triage\n- Review citations\n- Inspect evidence")
 
     bundle = load_incident_bundle(selected)
-    if "last_selected" not in st.session_state or st.session_state.last_selected != str(selected):
+    if (
+        "last_selected" not in st.session_state
+        or "last_retriever" not in st.session_state
+        or st.session_state.last_selected != str(selected)
+        or st.session_state.last_retriever != retriever_mode
+    ):
         st.session_state.last_selected = str(selected)
-        st.session_state.report = analyze_incident(bundle, query=query)
+        st.session_state.last_retriever = retriever_mode
+        st.session_state.report = analyze_incident(bundle, query=query, retriever_mode=retriever_mode)
     elif run:
-        st.session_state.report = analyze_incident(bundle, query=query)
+        st.session_state.report = analyze_incident(bundle, query=query, retriever_mode=retriever_mode)
 
     report = st.session_state.report
     top_hypothesis = report.hypotheses[0] if report.hypotheses else None
 
     _render_header(bundle.title, bundle.summary, top_hypothesis.label if top_hypothesis else "No hypothesis")
-    _render_metrics(bundle, report)
+    _render_metrics(bundle, report, retriever_mode)
 
     analysis_tab, evidence_tab, artifacts_tab, benchmark_tab = st.tabs(
         ["Analysis", "Evidence", "Artifacts", "Benchmark"]
@@ -93,14 +104,15 @@ def _render_header(title: str, summary: str, top_label: str) -> None:
     )
 
 
-def _render_metrics(bundle, report) -> None:
+def _render_metrics(bundle, report, retriever_mode: str) -> None:
     top_confidence = report.hypotheses[0].confidence if report.hypotheses else 0.0
     artifact_counts = Counter(artifact.artifact_type.value for artifact in bundle.artifacts)
     risk_level = _risk_level(top_confidence)
     citation_count = len({citation for hypothesis in report.hypotheses for citation in hypothesis.citations})
 
-    cols = st.columns(5)
+    cols = st.columns(6)
     metrics = [
+        ("Retriever", retriever_mode, "active mode"),
         ("Confidence", f"{top_confidence:.0%}", _confidence_label(top_confidence)),
         ("Risk Level", risk_level, "based on confidence"),
         ("Evidence", str(len(report.evidence)), "retrieved chunks"),
@@ -229,11 +241,43 @@ def _render_benchmark() -> None:
         return
 
     cases = json.loads(EVAL_CASES_PATH.read_text(encoding="utf-8"))
+    mode = st.segmented_control(
+        "Benchmark retriever",
+        options=["keyword", "vector", "compare"],
+        default="compare",
+    )
+    if mode == "compare":
+        keyword_results = _run_benchmark(cases, retriever_mode="keyword")
+        vector_results = _run_benchmark(cases, retriever_mode="vector")
+        cols = st.columns(4)
+        cols[0].metric("Keyword accuracy", f"{keyword_results['accuracy']:.0%}")
+        cols[1].metric("Vector accuracy", f"{vector_results['accuracy']:.0%}")
+        cols[2].metric("Cases", len(keyword_results["rows"]))
+        cols[3].metric("Agreement", f"{_agreement(keyword_results['rows'], vector_results['rows']):.0%}")
+        st.markdown("#### Keyword")
+        st.dataframe(keyword_results["rows"], use_container_width=True, hide_index=True)
+        st.markdown("#### Vector")
+        st.dataframe(vector_results["rows"], use_container_width=True, hide_index=True)
+    else:
+        benchmark = _run_benchmark(cases, retriever_mode=mode)
+        cols = st.columns(3)
+        cols[0].metric("Root-cause accuracy", f"{benchmark['accuracy']:.0%}")
+        cols[1].metric("Benchmark cases", len(benchmark["rows"]))
+        cols[2].metric("Passing cases", benchmark["correct"])
+        st.dataframe(benchmark["rows"], use_container_width=True, hide_index=True)
+    st.caption("Benchmark checks whether the top-ranked hypothesis matches known root-cause keywords.")
+
+
+def _run_benchmark(cases: list[dict], retriever_mode: str) -> dict:
     results = []
     correct = 0
     for case in cases:
         case_bundle = load_incident_bundle(PROJECT_ROOT / case["incident_dir"])
-        case_report = analyze_incident(case_bundle, query=case.get("query", "What is the most likely root cause?"))
+        case_report = analyze_incident(
+            case_bundle,
+            query=case.get("query", "What is the most likely root cause?"),
+            retriever_mode=retriever_mode,
+        )
         top_label = case_report.hypotheses[0].label if case_report.hypotheses else ""
         expected = [keyword.lower() for keyword in case["expected_cause_keywords"]]
         passed = any(keyword in top_label.lower() for keyword in expected)
@@ -241,6 +285,7 @@ def _render_benchmark() -> None:
         results.append(
             {
                 "incident": case_bundle.incident_id,
+                "retriever": retriever_mode,
                 "expected": ", ".join(expected),
                 "predicted": top_label,
                 "passed": passed,
@@ -248,13 +293,21 @@ def _render_benchmark() -> None:
             }
         )
 
-    accuracy = correct / len(results) if results else 0.0
-    cols = st.columns(3)
-    cols[0].metric("Root-cause accuracy", f"{accuracy:.0%}")
-    cols[1].metric("Benchmark cases", len(results))
-    cols[2].metric("Passing cases", correct)
-    st.dataframe(results, use_container_width=True, hide_index=True)
-    st.caption("Benchmark checks whether the top-ranked hypothesis matches known root-cause keywords.")
+    return {
+        "accuracy": correct / len(results) if results else 0.0,
+        "correct": correct,
+        "rows": results,
+    }
+
+
+def _agreement(left_rows: list[dict], right_rows: list[dict]) -> float:
+    if not left_rows:
+        return 0.0
+    right_by_incident = {row["incident"]: row["predicted"] for row in right_rows}
+    matches = sum(
+        1 for row in left_rows if row["predicted"] == right_by_incident.get(row["incident"])
+    )
+    return matches / len(left_rows)
 
 
 def _risk_level(confidence: float) -> str:
