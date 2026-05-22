@@ -7,7 +7,7 @@ name = "tracewise"
 version = "0.1.0"
 description = "AI incident triage agent with grounded root-cause analysis over logs, stack traces, and code evidence."
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.9"
 dependencies = [
   "fastapi>=0.110",
   "pydantic>=2.6",
